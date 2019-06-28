@@ -20,7 +20,33 @@ async function run() {
     }));
 
     // read each file
-    packagePaths.forEach(path => fs.readFile(path, 'utf8', function (err, data) { log(data)  }))
+    const packagefiles = await Promise.all(packagePaths
+        .map(path => new Promise(resolve => fs.readFile(path, 'utf8', (err, data) => resolve(data)))))
+
+    // resolve table data
+    const tableData = packagefiles.reduce((a, b) => {
+        const { author } = JSON.parse(b);
+        // lets contribute to people
+        if (!author) return;
+
+        // if author is there then increment else push
+        debugger;
+        const index = a.findIndex((package, index) => package.author === author);
+        if (index !== -1) {
+            a[index].count++
+        } else {
+            a.push({ author, count: 1 });
+        }
+
+        return a;
+    }, [])
+        .sort((a, b) => {
+            if(a.count < b.count) { return -1; }
+            if(a.count > b.count) { return 1; }
+            return 0;
+        });
+
+    log(tableData)
 }
 
 run();
