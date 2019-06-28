@@ -1,4 +1,4 @@
-const { green, red } = require('chalk');
+const { green } = require('chalk');
 const { table } = require('table');
 const log = console.log;
 
@@ -8,10 +8,11 @@ const outputTable = function(data) {
         output;
 
     withHeaders = [
-        ['AUTHOR', 'COUNT', 'PACKAGES', 'DONATE HERE'],
+        ['AUTHOR', 'COUNT', 'PACKAGES', 'POSSIBLE PATREON ACCOUNT'],
         ...data.map((row, i) => {
-            if (i === 0) return [red(row.author), red(row.count), red(row.packages.join(', ')), ''];
-            return [row.author, row.count, row.packages.join(', '), '']
+            if (i === 0 && row.author) return [green(`${row.author.name} - ${row.author.email}`), green(row.count), green(row.packages.join(', ')), green(row.author.patreon)];
+            if (row.author) return [`${row.author.name} - ${row.author.email}`, row.count, row.packages.join(', '), row.author.patreon]
+            return [];
         })
     ];
 
@@ -19,7 +20,7 @@ const outputTable = function(data) {
         columns: {
             0: {
                 alignment: 'left',
-                width: 20
+                width: 50
             },
             1: {
                 alignment: 'center',
@@ -27,11 +28,11 @@ const outputTable = function(data) {
             },
             2: {
                 alignment: 'left',
-                width: 30
+                width: 100
             },
             3: {
-                alignment: 'right',
-                width: 30
+                alignment: 'left',
+                width: 50
             }
         }
     };
