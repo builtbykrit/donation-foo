@@ -4,6 +4,7 @@
 const { green, red } = require('chalk');
 const path = require('path');
 const walk = require('./utils/walk');
+const outputTable = require('./utils/outputTable');
 const log = console.log;
 const currentDir = process.cwd();
 const fs = require('fs');
@@ -21,32 +22,33 @@ async function run() {
 
     // read each file
     const packagefiles = await Promise.all(packagePaths
-        .map(path => new Promise(resolve => fs.readFile(path, 'utf8', (err, data) => resolve(data)))))
+        .map(path => new Promise(resolve => fs.readFile(path, 'utf8', (err, data) => resolve(data)))));
 
     // resolve table data
-    const tableData = packagefiles.reduce((a, b) => {
-        const { author } = JSON.parse(b);
+    const tableData = packagefiles.reduce((payload, b) => {
+        const { author, name } = JSON.parse(b);
         // lets contribute to people
-        if (!author) return;
+        if (!author) return payload;
 
         // if author is there then increment else push
-        debugger;
-        const index = a.findIndex((package, index) => package.author === author);
+        const index = payload.findIndex(package => {
+            return package.author === author.name
+        });
         if (index !== -1) {
-            a[index].count++
+            payload[index].count++;
+            payload[index].packages.push(name);
         } else {
-            a.push({ author, count: 1 });
+            payload.push({ author: author.name, count: 1, packages: [name] });
         }
-
-        return a;
+        return payload;
     }, [])
         .sort((a, b) => {
-            if(a.count < b.count) { return -1; }
-            if(a.count > b.count) { return 1; }
+            if(a.count < b.count) { return 1; }
+            if(a.count > b.count) { return -1; }
             return 0;
         });
 
-    log(tableData)
+    outputTable(tableData.slice(0, 10));
 }
 
 run();
