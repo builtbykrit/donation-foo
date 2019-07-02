@@ -1,5 +1,5 @@
 {
-  "name": "dontaion-foo",
+  "name": "gracias",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "donate": "./index.js"
+    "gracias": "./index.js"
   },
   "dependencies": {
-    "chalk": "^2.4.2"
+    "axios": "^0.19.0",
+    "chalk": "^2.4.2",
+    "eslint": "^6.0.1",
+    "table": "^5.4.1"
   }
 }
