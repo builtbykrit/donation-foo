@@ -10,8 +10,12 @@ const outputTable = function(data) {
     withHeaders = [
         ['AUTHOR', 'COUNT', 'PACKAGES', 'POSSIBLE PATREON ACCOUNT'],
         ...data.map((row, i) => {
-            if (i === 0 && row.author) return [green(`${row.author.name} - ${row.author.email}`), green(row.count), green(row.packages.join(', ')), green(row.author.patreon)];
-            if (row.author) return [`${row.author.name} - ${row.author.email}`, row.count, row.packages.join(', '), row.author.patreon]
+
+            // remove duplicate packages
+            const packages =  [...new Set(row.packages)].slice(0,5).join(', ');
+
+            if (i === 0 && row.author) return [green(`${row.author.name} - ${row.author.email}`), green(row.count), green(packages), green(row.author.patreon)];
+            if (row.author) return [`${row.author.name} - ${row.author.email}`, row.count, packages, row.author.patreon];
             return [];
         })
     ];
@@ -28,7 +32,7 @@ const outputTable = function(data) {
             },
             2: {
                 alignment: 'left',
-                width: 100
+                width: 75
             },
             3: {
                 alignment: 'left',
@@ -36,7 +40,6 @@ const outputTable = function(data) {
             }
         }
     };
-    debugger;
     output = table(withHeaders, config);
     log(output);
 };

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // deps
-const { green, red } = require('chalk');
+const { green, grey } = require('chalk');
 const path = require('path');
 const walk = require('./utils/walk');
 const outputTable = require('./utils/outputTable');
@@ -12,7 +12,7 @@ const fs = require('fs');
 
 // Greet
 log('\x1Bc');
-log(green('Welcome to Donation Foo'));
+log(green('Welcome to Gracias!'));
 
 async function run() {
 
@@ -29,18 +29,23 @@ async function run() {
     // resolve table data
     const tableData = packagefiles.reduce((payload, b) => {
         const { author, name } = JSON.parse(b);
+
         // lets contribute to people
         if (!author) return payload;
-
         // if author is there then increment else push
         const index = payload.findIndex(package => {
+            if (typeof author === 'string') return package.author.name === author;
             return package.author.name === author.name
         });
         if (index !== -1) {
             payload[index].count++;
             payload[index].packages.push(name);
         } else {
-            payload.push({ author: { name: author.name, email: author.email || '' }, count: 1, packages: [name] });
+            payload.push({
+                author: { name: author.name ? author.name : author, email: author.email || '' },
+                count: 1,
+                packages: [name]
+            });
         }
         return payload;
     }, [])
