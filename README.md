@@ -15,7 +15,4 @@ Gracias makes it super easy to find and support open source contributors whose w
 1. Navigate to a node project in your terminal
 2. Run `gracias`
 
-## To-do
-The script still grinds to a halt for larger projects, we need to make some modifications to fix this. 
-
-If you have any questions email garrett@builtbykrit.com or submit a PR!
+PRs welcomed!
