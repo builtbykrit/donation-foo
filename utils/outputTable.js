@@ -1,4 +1,3 @@
-const { green } = require('chalk');
 const { table } = require('table');
 const log = console.log;
 
@@ -9,7 +8,7 @@ const outputTable = function(data) {
 
     withHeaders = [
         ['AUTHOR', 'COUNT', 'PACKAGES', 'POSSIBLE PATREON ACCOUNT'],
-        ...data.map((row, i) => {
+        ...data.map(row => {
 
             // remove duplicate packages
             const packages =  row.packages.join(', ')

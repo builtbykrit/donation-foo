@@ -33,9 +33,9 @@ async function run() {
         // lets contribute to people
         if (!author) return payload;
         // if author is there then increment else push
-        const index = payload.findIndex(package => {
-            if (typeof author === 'string') return package.author.name === author;
-            return package.author.name === author.name
+        const index = payload.findIndex(package_ => {
+            if (typeof author === 'string') return package_.author.name === author;
+            return package_.author.name === author.name
         });
         if (index !== -1) {
             payload[index].count++;
