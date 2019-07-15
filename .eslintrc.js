@@ -2,6 +2,7 @@ module.exports = exports = {
     env: {
         "node": true,
         "es6": true,
+        "mocha": true,
     },
     extends: ['eslint:recommended'],
     parserOptions: {
@@ -10,5 +11,5 @@ module.exports = exports = {
       },
     rules: {
         'indent': ['error', 4],
-    }
+    },
 };
