@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // deps
-const { green, grey } = require('chalk');
+const { green } = require('chalk');
 const path = require('path');
 const walk = require('./utils/walk');
 const outputTable = require('./utils/outputTable');
@@ -57,9 +57,12 @@ async function run() {
 
     // limit to top ten
     const topTen = tableData.slice(0, 10);
-    const results = await Promise.all(topTen.map(a => appendPatreon(a).catch(e => e)));
-    const validResults = results.filter(result => !(result instanceof Error));
-    outputTable(validResults);
+    const authorsAndPatreonAccounts = await appendPatreon(topTen.map(a => a.author.name));
+    topTen.forEach(r => {
+        const patreonUrl = authorsAndPatreonAccounts.find(a => a.name === r.author.name).url || null;
+        if (patreonUrl) r.author.patreon = patreonUrl;
+    })
+    outputTable(topTen);
 }
 
 run();

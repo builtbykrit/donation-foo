@@ -1,15 +1,10 @@
 const patreonClient = require('./patreonClient');
 
-const appendPatreon = async function(row) {
-    return await new Promise((resolve, reject) => patreonClient.get('', {
-        params: {
-            query: row.author.name,
-        }
+const appendPatreon = async function(authors) {
+    return await new Promise((resolve, reject) => patreonClient.post('', {
+        authors,
     })
-        .then(({ data: { hits } }) => {
-            if (hits) row.author.patreon = hits[0] && hits[0].url;
-            resolve(row)
-        })
+        .then(({ data }) => resolve(data))
         .catch(err => reject(err))
     )
 };
