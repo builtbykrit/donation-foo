@@ -1,0 +1,25 @@
+
+version: 2
+jobs:
+  node:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run: npm install
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - node_modules
+
+      - run: npm run lint
+
+workflows:
+  version: 2
+  node:
+    jobs:
+      - node

@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bin": {
-    "gracias": "./index.js"
+    "gracias": "./src/index.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
